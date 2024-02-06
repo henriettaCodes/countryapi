@@ -45,6 +45,13 @@ class Country {
         return new Country(response.rows[0]) 
     }
 
+    async update(data){
+        if(!data.name || !data.capital || !data.population || !data.languages){
+            throw new Error("Required key is null")
+        }
+        let response = await db.query("UPDATE country SET name = $1, capital = $2, population = $3, languages = $4, fun_fact = $5, map_image_url = $6 WHERE name = $7 RETURNING *;",[data.name, data.capital, data.population, data.languages, data.fun_fact, data.map_image_url, this.name])
+        return new Country(response.rows[0])
+    }
 
   }
   
